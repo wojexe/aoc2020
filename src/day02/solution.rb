@@ -3,44 +3,42 @@
 
 class Day02
   def initialize()
-    @input = File.readlines("inputs/day02.example")
-
-    @input.map { |line| read_section(line) } 
-
-    @input.each { |line| puts line }
+    @input = File.readlines("inputs/day02")
+                 .filter { |line| !line.empty? }
+                 .map { |line| read_section(line) }
   end
 
-  # `1-3 a: abcde`
   def read_section(line)
-    divider = line.index '-'
-    space = line.index ' '
-    second_space = line.index ' ' # make it properly tho
-
-    puts "Processing `#{line.strip}`"
-
-    result = {
-      start: Integer(line[0, divider]),
-      end: Integer(line[divider + 1, space - 1]),
-      symbol: line[space + 1, space + 2],
-      password: line[second_space + 1 ..]
-    }
-
-    puts result
+    startP, endP, char, str = line.strip.match(/(\d+)-(\d+) (\w): (\w+)/).captures
 
     return {
-      start: Integer(line[0, divider]),
-      end: Integer(line[divider + 1, space - 1]),
-      symbol: line[space + 1, space + 2],
-      password: line[second_space + 1 ..]
+      startP: Integer(startP) - 1,
+      endP: Integer(endP),
+      char: ,
+      str: ,
     }
   end
 
   def part_one
-    return nil
+    @input.reduce(0) do |memo, line|
+      line => { startP:, endP:, char:, str: }
+
+      count = str.chars.filter { |c| c == char }.count
+
+      memo + (count.between?(startP + 1, endP) ? 1 : 0)
+    end
   end
 
-  def part_two
-    return nil
+def part_two
+    def exactly_one_equal(a, b, c)
+      (a == c) ^ (b == c)
+    end
+
+    @input.reduce(0) do |memo, line|  
+      line => { startP:, endP:, char:, str: }
+
+      memo + (exactly_one_equal(str[startP], str[endP - 1], char) ? 1 : 0)
+    end
   end
 end
 
